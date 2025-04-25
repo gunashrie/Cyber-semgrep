@@ -1,12 +1,25 @@
 rules:
-  - id: output-validation-issue
+  - id: unsanitized-sql-query
     patterns:
       - pattern: |
-          $OUTPUT = $INPUT
-    message: "Potential output validation issue detected."
+          cursor.execute("SELECT * FROM users WHERE username = '" + $USERNAME + "'")
+    message: "Potential SQL injection vulnerability detected. Use parameterized queries."
+    severity: ERROR
+    languages:
+      - python
+    metadata:
+      category: security
+      technology: database
+
+  - id: hardcoded-secret
+    patterns:
+      - pattern: |
+          $SECRET = "secret_value"
+    message: "Hardcoded secret detected. Consider using environment variables."
     severity: WARNING
     languages:
       - python
     metadata:
       category: security
-      technology: web
+      technology: general
+
