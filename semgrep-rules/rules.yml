@@ -1,0 +1,12 @@
+rules:
+  - id: output-validation-issue
+    patterns:
+      - pattern: |
+          $OUTPUT = $INPUT
+    message: "Potential output validation issue detected."
+    severity: WARNING
+    languages:
+      - python
+    metadata:
+      category: security
+      technology: web
