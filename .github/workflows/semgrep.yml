@@ -1,26 +1,21 @@
-on:
-  workflow_dispatch: {}
-  pull_request: {}
-  push:
-    branches:
-    - main
-    - master
-    paths:
-    - .github/workflows/semgrep.yml
-  schedule:
-  # random HH:MM to avoid a load spike on GitHub Actions at 00:00
-  - cron: 7 18 * * *
-name: Semgrep
+name: Semgrep Scan
+
+on: [push, pull_request]
+
 jobs:
   semgrep:
-    name: semgrep/ci
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    env:
-      SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-    container:
-      image: semgrep/semgrep
     steps:
-    - uses: actions/checkout@v4
-    - run: semgrep ci
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Semgrep
+        run: pip install semgrep
+
+      - name: Run Semgrep
+        run: semgrep --config semgrep-rules/rules.yml --error
