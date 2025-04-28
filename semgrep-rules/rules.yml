@@ -28,7 +28,7 @@ rules:
       - pattern: |
           print($DATA)
     message: "Potential XSS vulnerability detected. Use output encoding."
-    severity: WARNING
+    severity: ERROR
     languages:
       - python
     metadata:
