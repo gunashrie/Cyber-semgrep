@@ -1,4 +1,3 @@
-# Example Python file with potential security issues
 
 import sqlite3
 
@@ -15,7 +14,11 @@ def get_user(username):
     
     result = cursor.fetchall()
     conn.close()
-    return result
+    
+    # Example of output encoding 
+    encoded_result = [str(row).replace("<", "&lt;").replace(">", "&gt;") for row in result]
+    
+    return encoded_result
 
 user = get_user("admin")
 print(user)
